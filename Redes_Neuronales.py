@@ -3,7 +3,7 @@ from sklearn.model_selection import train_test_split, KFold, LeaveOneOut
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
-from sklearn.datasets import load_iris, make_classification
+from sklearn.datasets import load_iris, load_wine, load_breast_cancer
 from sklearn.preprocessing import StandardScaler
 
 # Función para entrenar y evaluar un clasificador con validación específica
@@ -49,39 +49,23 @@ def main():
     # Cargar datasets
     iris = load_iris()
     X_iris, y_iris = iris.data, iris.target
+    wine = load_wine()
+    X_Wine, Y_Wine = wine.data, wine.target
+    cancer = load_breast_cancer()
+    X_cancer, Y_cancer = cancer.data, cancer.target
 
     # Normalizar los datos
     scaler = StandardScaler()
     X_iris_scaled = scaler.fit_transform(X_iris)
-
-    X_additional1, y_additional1 = make_classification(
-        n_samples=150,
-        n_features=4,
-        n_informative=2,
-        n_redundant=1,
-        n_repeated=0,
-        n_classes=3,
-        n_clusters_per_class=1,
-        random_state=42
-    )
-    X_additional1_scaled = scaler.fit_transform(X_additional1)
-
-    X_additional2, y_additional2 = make_classification(
-        n_samples=200,
-        n_features=4,
-        n_informative=3,
-        n_redundant=0,
-        n_repeated=0,
-        n_classes=3,
-        n_clusters_per_class=1,
-        random_state=99
-    )
-    X_additional2_scaled = scaler.fit_transform(X_additional2)
+    scaler = StandardScaler()
+    X_wine_scaled = scaler.fit_transform(X_Wine)
+    scaler = StandardScaler()
+    X_cancer_scaled = scaler.fit_transform(X_cancer)
 
     datasets = [
         ("Iris Plant", X_iris_scaled, y_iris),
-        ("Dataset 1", X_additional1_scaled, y_additional1),
-        ("Dataset 2", X_additional2_scaled, y_additional2)
+        ("Wine", X_wine_scaled, Y_Wine),
+        ("Breast Cancer", X_cancer_scaled, Y_cancer)
     ]
 
     # Clasificadores
